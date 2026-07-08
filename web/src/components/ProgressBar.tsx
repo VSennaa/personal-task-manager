@@ -1,0 +1,8 @@
+export function ProgressBar({ percent }: { percent: number }) {
+  return (
+    <div className="progress-bar" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+      <div className="progress-bar-fill" style={{ width: `${percent}%` }} />
+      <span className="progress-bar-label">{percent.toFixed(1)}%</span>
+    </div>
+  );
+}

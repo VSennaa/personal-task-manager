@@ -1,0 +1,217 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-e: #dc2626;
+  --color-m: #d97706;
+  --color-s: #6b7280;
+  --color-bg: #ffffff;
+  --color-text: #111827;
+  --color-border: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #111827;
+    --color-text: #f9fafb;
+    --color-border: #374151;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+#root {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+button,
+input,
+select {
+  font-size: 1rem;
+  min-height: 44px;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 0 1rem;
+}
+
+input,
+select {
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  padding: 0 0.75rem;
+  background: transparent;
+  color: inherit;
+}
+
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.form-error {
+  color: var(--color-e);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.quick-create {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.quick-create input,
+.quick-create select {
+  flex: 1 1 140px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-item a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+}
+
+.task-item--E a {
+  border-color: var(--color-e);
+  box-shadow: 0 0 0 1px var(--color-e);
+}
+
+.task-item--M a {
+  border-color: var(--color-m);
+}
+
+.task-item--S a {
+  border-color: var(--color-s);
+}
+
+.task-type-badge {
+  font-weight: 700;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.task-item--E .task-type-badge {
+  color: var(--color-e);
+}
+
+.task-item--M .task-type-badge {
+  color: var(--color-m);
+}
+
+.task-item--S .task-type-badge {
+  color: var(--color-s);
+}
+
+.task-title {
+  flex: 1;
+}
+
+.task-deadline {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.progress-bar {
+  position: relative;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--color-border);
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #16a34a;
+  transition: width 0.2s ease;
+}
+
+.progress-bar-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.subtask-tree {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.subtask-item {
+  padding-top: 0.5rem;
+}
+
+.subtask-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+.subtask-title.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.subtask-expand {
+  margin-left: 1.5rem;
+  min-height: 36px;
+  background: transparent;
+  color: inherit;
+}
