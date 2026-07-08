@@ -7,3 +7,8 @@ build/
 *.log
 coverage/
 .DS_Store
+web/node_modules/
+web/dist/
+cli/node_modules/
+cli/dist/
+.claude/settings.local.json
