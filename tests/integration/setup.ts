@@ -44,3 +44,18 @@ export async function loginAndGetToken(app: FastifyInstance): Promise<string> {
   const response = await request(app.server).post("/auth/login").send({ username, password });
   return (response.body as { token: string }).token;
 }
+
+/**
+ * Cria um usuário e assina o JWT diretamente (sem HTTP), para suítes que
+ * precisam de um token válido em todo `beforeEach` mas não estão testando o
+ * fluxo de login em si — evitar isso esgota o rate limit de 5/min do
+ * POST /auth/login, que é real e compartilhado pela instância do app.
+ */
+export async function createAuthenticatedUser(
+  app: FastifyInstance,
+  username = "tester",
+): Promise<string> {
+  const passwordHash = await hashPassword("senha-forte-123");
+  const user = await testPrisma.user.create({ data: { username, passwordHash } });
+  return app.jwt.sign({ sub: user.id, username: user.username }, { expiresIn: "30d" });
+}

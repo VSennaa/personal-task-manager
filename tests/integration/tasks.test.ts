@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
 import request from "supertest";
-import { buildTestApp, loginAndGetToken, resetDb, testPrisma } from "./setup.js";
+import { buildTestApp, createAuthenticatedUser, resetDb, testPrisma } from "./setup.js";
 
 describe("CRUD de tasks", () => {
   let app: FastifyInstance;
@@ -12,7 +12,7 @@ describe("CRUD de tasks", () => {
   });
 
   beforeEach(async () => {
-    token = await loginAndGetToken(app);
+    token = await createAuthenticatedUser(app);
   });
 
   afterEach(async () => {
