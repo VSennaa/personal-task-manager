@@ -34,6 +34,10 @@ ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
+# scripts/ e src/ (fonte TS) ficam disponíveis para "npm run user:create"
+# e "user:password" via tsx (ver package.json) — user:create roda via SSH.
+COPY --from=build /app/scripts ./scripts
+COPY --from=build /app/src ./src
 COPY package.json ./
 EXPOSE 3000
-CMD ["node", "dist/api/server.js"]
+CMD ["node", "dist/src/api/server.js"]

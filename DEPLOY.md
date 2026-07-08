@@ -3,6 +3,55 @@
 Guia passo a passo para colocar o sistema no ar em `https://vsenaa.duckdns.org`,
 seguindo a Fase 5 do `PLANO.md` (infra, sem TDD — validação por smoke test).
 
+## Instalação rápida (um comando)
+
+Numa VPS Ubuntu/Debian limpa, como root ou usuário com `sudo`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/VSennaa/personal-task-manager/main/install.sh | bash
+```
+
+O [`install.sh`](install.sh) é resiliente a requisitos faltando — instala
+git/curl/openssl/Docker/Compose/ufw se necessário — e sozinho faz tudo que
+as seções 1-7 abaixo descrevem manualmente: clona o repositório em
+`/opt/personal-task-manager`, gera um `.env` com segredos aleatórios,
+libera o firewall (22/80/443), sobe `docker-compose.prod.yml`, roda as
+migrations e instala o comando `task-manager-user` no PATH para provisionar
+(ou trocar) a senha do usuário via SSH — o único jeito de criar login, já
+que não há cadastro público.
+
+Variáveis opcionais (exportar antes do `curl | bash`, ou prefixar o comando):
+
+| Variável | Default | Efeito |
+|---|---|---|
+| `REPO_URL` | `https://github.com/VSennaa/personal-task-manager.git` | de onde clonar |
+| `BRANCH` | `main` | branch a instalar/atualizar |
+| `INSTALL_DIR` | `/opt/personal-task-manager` | onde o código fica |
+| `DOMAIN` | `vsenaa.duckdns.org` | gravado no `.env` e usado pelo Caddy |
+| `DUCKDNS_DOMAIN` / `DUCKDNS_TOKEN` | — | se ambos definidos, já ativa o timer do DuckDNS |
+| `SKIP_FIREWALL` | — | defina `1` para não mexer no `ufw` |
+
+Exemplo configurando o DuckDNS na mesma passada:
+
+```bash
+DUCKDNS_DOMAIN=vsenaa DUCKDNS_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx \
+  curl -fsSL https://raw.githubusercontent.com/VSennaa/personal-task-manager/main/install.sh | bash
+```
+
+Rodar de novo (`install.sh` é idempotente) atualiza o código (`git pull`),
+reconstrói os containers e reaplica migrations — útil para redeploy.
+
+Depois de rodar:
+
+```bash
+task-manager-user            # cria o usuário (prompt interativo)
+task-manager-user password   # troca a senha depois
+```
+
+E siga para o [smoke test](#8-smoke-test-critério-de-saída-da-fase-5) da
+seção 8. As seções abaixo explicam cada passo em detalhe (útil para
+entender o que o instalador faz, depurar, ou rodar manualmente).
+
 ## 0. Pré-requisitos na VPS
 
 - Ubuntu/Debian com acesso SSH.
@@ -160,6 +209,7 @@ docker compose -f docker-compose.prod.yml down
 
 | Arquivo                        | Papel                                                     |
 |---------------------------------|-----------------------------------------------------------|
+| `install.sh`                     | instalador de um comando (clone + deps + deploy + `task-manager-user`) |
 | `docker-compose.prod.yml`       | orquestra caddy + app + db em produção                    |
 | `Dockerfile`                    | build da API (stage `production`)                          |
 | `Dockerfile.caddy`               | builda a web estática e empacota com o Caddy               |
