@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+# Build da web estática (React/Vite) + Caddy, empacotados numa única
+# imagem para simplificar o Compose de produção (3 serviços: caddy, app, db).
+
+FROM node:20-alpine AS web-build
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY web/package.json ./web/package.json
+COPY cli/package.json ./cli/package.json
+RUN npm ci
+COPY src/domain ./src/domain
+COPY web ./web
+RUN npm run build -w web
+
+FROM caddy:2-alpine
+COPY --from=web-build /app/web/dist /srv/web
+COPY Caddyfile /etc/caddy/Caddyfile

@@ -1,0 +1,10 @@
+[Unit]
+Description=Roda duckdns-update.service a cada 5 minutos
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=5min
+Unit=duckdns-update.service
+
+[Install]
+WantedBy=timers.target

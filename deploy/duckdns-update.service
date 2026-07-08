@@ -1,0 +1,9 @@
+[Unit]
+Description=Atualiza o IP do domínio DuckDNS
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=DUCKDNS_ENV_FILE=/opt/personal-task-manager/deploy/duckdns.env
+ExecStart=/opt/personal-task-manager/deploy/duckdns-update.sh

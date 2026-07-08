@@ -1,0 +1,27 @@
+{$DOMAIN:vsenaa.duckdns.org} {
+	encode gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
+	# API REST (Fastify) — roda apenas na rede interna do Compose.
+	handle /api/* {
+		uri strip_prefix /api
+		reverse_proxy app:3000
+	}
+
+	handle /health {
+		reverse_proxy app:3000
+	}
+
+	# Web (React/Vite), estática — servida diretamente pelo Caddy.
+	handle {
+		root * /srv/web
+		try_files {path} /index.html
+		file_server
+	}
+}

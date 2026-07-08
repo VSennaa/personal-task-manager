@@ -1,0 +1,11 @@
+[Unit]
+Description=Backup diário do Postgres (pg_dump) do personal-task-manager
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+Environment=PROJECT_DIR=/opt/personal-task-manager
+Environment=BACKUP_DIR=/opt/backups/personal-task-manager
+Environment=RETENTION_DAYS=7
+ExecStart=/opt/personal-task-manager/deploy/backup.sh

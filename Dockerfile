@@ -3,6 +3,8 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 COPY package.json package-lock.json* ./
+COPY web/package.json ./web/package.json
+COPY cli/package.json ./cli/package.json
 COPY prisma ./prisma
 
 # ---- dev: usado pelo docker-compose.dev.yml, roda com hot reload ----
