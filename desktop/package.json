@@ -1,0 +1,14 @@
+{
+  "name": "vsenaa-desktop",
+  "version": "1.0.0",
+  "description": "Janela compacta (mini-app) do vsenaa — wrapper Electron multiplataforma",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package:win": "electron-packager . vsenaa-desktop --platform=win32 --arch=x64 --out=dist --overwrite --app-version=1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "@electron/packager": "^18.3.0"
+  }
+}
